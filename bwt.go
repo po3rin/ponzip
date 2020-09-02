@@ -59,7 +59,7 @@ func invBwt(s string) string {
 	idx := strings.Index(s, "$")
 	fmt.Println(idx)
 	charCounter := make(map[rune]int)
-	// 各文字の出現回数をカウント
+
 	for _, c := range s {
 		_, ok := charCounter[c]
 		if !ok {
@@ -68,6 +68,5 @@ func invBwt(s string) string {
 		}
 		charCounter[c]++
 	}
-	fmt.Println(charCounter)
 	return ""
 }
