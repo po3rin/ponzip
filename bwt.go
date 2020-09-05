@@ -6,15 +6,7 @@ import (
 	"strings"
 )
 
-func getChar(t string, i int) string {
-	rs := []rune(t)
-	if i < 0 {
-		return string(rs[len(rs)+i])
-	}
-	return string(rs[i])
-}
-
-func bwt(t string) string {
+func Bwt(t string) string {
 	t += "$"
 	sa := make([]string, len(t))
 	for i := 0; i < len(t); i++ {
@@ -25,37 +17,35 @@ func bwt(t string) string {
 	var result string
 	for _, v := range sa {
 		if len(v) < len(t) {
-			result += getChar(t, -len(v)-1)
+			result += GetChar(t, -len(v)-1)
 			continue
 		}
-		result += getChar(t, -1)
+		result += GetChar(t, -1)
 	}
 	return result
 }
 
-func rank(t string, char string, index int) int {
-	r := []rune(t)
-	sr := r[:index]
+// func BwtIncrement(t string) string {
+// 	var (
+// 		bwt   string
+// 		index int
+// 	)
 
-	c := strings.Count(string(sr), char)
-	return c
-}
+// 	t += "$"
+// 	r := []rune(t)
 
-func rankLessThan(t string, char string, index int) int {
-	r := []rune(t)
-	ra := r[:index]
+// 	for i := 0; i < len(r); i++ {
+// 		c := r[len(r)-i-1]
+// 		bwt = Insert(bwt, string(c), index)
+// 		index = Rank(bwt, string(c), index) + RankLessThan(bwt, string(c), len([]rune(bwt)))
+// 		fmt.Println("------")
+// 		fmt.Println(string(c))
+// 		fmt.Println(index)
+// 	}
+// 	return bwt
+// }
 
-	base := []rune(char)[0]
-	var counter int
-	for _, c := range ra {
-		if c < base {
-			counter++
-		}
-	}
-	return counter
-}
-
-func bwtInverse(t string) string {
+func BwtInverse(t string) string {
 	idx := strings.Index(t, "$")
 	fmt.Println(idx)
 	charCounter := make(map[rune]int)
