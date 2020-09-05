@@ -5,8 +5,8 @@ import (
 )
 
 func main() {
-	b := bwt("abracadabra")
+	b := Bwt("abracadabra")
 	fmt.Println(b)
-	s := invBwt(b)
+	s := BwtInverse(b)
 	fmt.Println(s)
 }
