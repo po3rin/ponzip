@@ -1,12 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"sort"
 	"strings"
 )
 
-func Bwt(t string) string {
+func BWT(t string) string {
 	t += "$"
 	sa := make([]string, len(t))
 	for i := 0; i < len(t); i++ {
@@ -25,38 +24,45 @@ func Bwt(t string) string {
 	return result
 }
 
-// func BwtIncrement(t string) string {
-// 	var (
-// 		bwt   string
-// 		index int
-// 	)
-
-// 	t += "$"
-// 	r := []rune(t)
-
-// 	for i := 0; i < len(r); i++ {
-// 		c := r[len(r)-i-1]
-// 		bwt = Insert(bwt, string(c), index)
-// 		index = Rank(bwt, string(c), index) + RankLessThan(bwt, string(c), len([]rune(bwt)))
-// 		fmt.Println("------")
-// 		fmt.Println(string(c))
-// 		fmt.Println(index)
-// 	}
-// 	return bwt
-// }
-
-func BwtInverse(t string) string {
-	idx := strings.Index(t, "$")
-	fmt.Println(idx)
-	charCounter := make(map[rune]int)
-
+func BWTInverse(t string) string {
+	// Cの構築 ------------
+	C := make(map[rune]int)
 	for _, c := range t {
-		_, ok := charCounter[c]
+		v, ok := C[c]
 		if !ok {
-			charCounter[c] = 1
+			C[c] = 1
 			continue
 		}
-		charCounter[c]++
+		C[c] = v + 1
 	}
-	return ""
+
+	sig := Deduplicate(strings.Split(t, ""))
+
+	var sum int
+	for _, c := range sig {
+		r := []rune(c)[0]
+		cur := C[r]
+		C[r] = sum
+		sum = sum + cur
+	}
+
+	// LF-mapping ----------
+
+	psi := make(map[int]int)
+	for i, c := range t {
+		psi[C[c]] = i
+		C[c] = C[c] + 1
+	}
+
+	// inverse -------------
+
+	var p int
+	r := []rune(t)
+	result := make([]rune, len(r))
+	for i := range t {
+		p = psi[p]
+		result[i] = r[p]
+	}
+
+	return string(result)
 }

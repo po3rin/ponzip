@@ -2,7 +2,7 @@ package main
 
 import "testing"
 
-func TestBwt(t *testing.T) {
+func TestBWT(t *testing.T) {
 	tests := []struct {
 		name string
 		t    string
@@ -17,7 +17,7 @@ func TestBwt(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := Bwt(tt.t)
+			got := BWT(tt.t)
 			if got != tt.want {
 				t.Errorf("\nwant: %+v\ngot : %+v\n", tt.want, got)
 			}

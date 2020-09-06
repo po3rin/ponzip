@@ -1,6 +1,9 @@
 package main
 
-import "strings"
+import (
+	"sort"
+	"strings"
+)
 
 func GetChar(t string, i int) string {
 	rs := []rune(t)
@@ -38,4 +41,43 @@ func RankLessThan(t string, char string, index int) int {
 		}
 	}
 	return counter
+}
+
+func Deduplicate(s []string) []string {
+	var result []string
+	sort.Strings(s)
+	j := 0
+	for i := 1; i < len(s); i++ {
+		if s[j] == s[i] {
+			continue
+		}
+		j++
+		// preserve the original data
+		// in[i], in[j] = in[j], in[i]
+		// only set what is required
+		s[j] = s[i]
+	}
+	result = s[:j+1]
+	return result
+}
+
+func MoveToFront(needle rune, haystack []rune) []rune {
+	if len(haystack) == 0 || haystack[0] == needle {
+		return haystack
+	}
+	var prev rune
+	for i, elem := range haystack {
+		switch {
+		case i == 0:
+			haystack[0] = needle
+			prev = elem
+		case elem == needle:
+			haystack[i] = prev
+			return haystack
+		default:
+			haystack[i] = prev
+			prev = elem
+		}
+	}
+	return append(haystack, prev)
 }
