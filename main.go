@@ -9,4 +9,6 @@ func main() {
 	fmt.Println(b)
 	s := BWTInverse(b)
 	fmt.Println(s)
+	fmt.Println(string([]rune(s)[0]))
+	fmt.Println(string([]rune(s)[1]))
 }

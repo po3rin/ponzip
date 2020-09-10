@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"sort"
 	"strings"
 )
@@ -25,6 +26,8 @@ func BWT(t string) string {
 }
 
 func BWTInverse(t string) string {
+	r := []rune(t)
+
 	// Cの構築 ------------
 	C := make(map[rune]int)
 	for _, c := range t {
@@ -46,23 +49,25 @@ func BWTInverse(t string) string {
 		sum = sum + cur
 	}
 
+	for r, c := range C {
+		fmt.Printf("%+v : %+v\n", string(r), c)
+	}
 	// LF-mapping ----------
 
-	psi := make(map[int]int)
+	lfm := make([]int, len(r))
 	for i, c := range t {
-		psi[C[c]] = i
+		lfm[C[c]] = i
 		C[c] = C[c] + 1
 	}
 
 	// inverse -------------
 
-	var p int
-	r := []rune(t)
+	p := strings.Index(t, "$")
 	result := make([]rune, len(r))
 	for i := range t {
-		p = psi[p]
+		p = lfm[p]
 		result[i] = r[p]
 	}
 
-	return string(result)
+	return string(result[:len(result)-1])
 }
