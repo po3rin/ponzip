@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"sort"
 	"strings"
+	"unicode/utf8"
 )
 
 func BWT(t string) string {
@@ -24,9 +24,7 @@ func BWT(t string) string {
 	}
 	return result
 }
-
 func BWTInverse(t string) string {
-	r := []rune(t)
 
 	// Cの構築 ------------
 	C := make(map[rune]int)
@@ -49,25 +47,23 @@ func BWTInverse(t string) string {
 		sum = sum + cur
 	}
 
-	for r, c := range C {
-		fmt.Printf("%+v : %+v\n", string(r), c)
-	}
 	// LF-mapping ----------
 
-	lfm := make([]int, len(r))
+	lf := make([]int, utf8.RuneCountInString(t))
 	for i, c := range t {
-		lfm[C[c]] = i
+		lf[C[c]] = i
 		C[c] = C[c] + 1
 	}
 
 	// inverse -------------
-
+	r := []rune(t)
 	p := strings.Index(t, "$")
 	result := make([]rune, len(r))
 	for i := range t {
-		p = lfm[p]
+		p = lf[p]
 		result[i] = r[p]
 	}
 
+	// 最後の$を外して返す
 	return string(result[:len(result)-1])
 }
