@@ -52,9 +52,6 @@ func Deduplicate(s []string) []string {
 			continue
 		}
 		j++
-		// preserve the original data
-		// in[i], in[j] = in[j], in[i]
-		// only set what is required
 		s[j] = s[i]
 	}
 	result = s[:j+1]
